@@ -1,10 +1,10 @@
 class Brave
   # initializeメソッド
-  def initialize
-    @name = "テリー"
-    @hp = 500
-    @offense = 150
-    @defense = 100
+  def initialize(name:, hp:, offense:, defense:)
+    @name = name
+    @hp = hp
+    @offense = offense
+    @defense = defense
   end
 
   # # nameのセッター
@@ -49,7 +49,8 @@ class Brave
 
 end
 
-brave = Brave.new
+#キーワード引数でinitializeメソッドに値を渡す
+brave = Brave.new(name: "テリー", hp: 500, offense: 150, defense: 100)
 
 # brave.name = "テリー"
 # brave.hp = 500
