@@ -49,7 +49,15 @@ brave.offense = 150
 brave.defense = 100
 
 # 値を取得する
-puts brave.name
-puts brave.hp
-puts brave.offense
-puts brave.defense
+# puts "NAME:#{brave.name}" 
+# puts "HP:#{brave.hp}"
+# puts "OFFENSE:#{brave.offense}"
+# puts "DEFENSE:#{brave.defense}"
+
+# ヒアドキュメント
+puts <<~TEXT
+NAME:#{brave.name}
+HP:#{brave.hp}
+OFFENSE:#{brave.offense}
+DEFENSE:#{brave.defense}
+TEXT
