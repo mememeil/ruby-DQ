@@ -4,9 +4,19 @@ class Brave
     @name = name
   end
 
+  # nameのゲッター
+  def name
+    @name
+  end
+
   # hpのセッター
   def hp=(hp)
     @hp = hp
+  end
+
+  # hpのゲッター
+  def hp
+    @hp
   end
 
   # offenseのセッター
@@ -14,9 +24,19 @@ class Brave
     @offense = offense
   end
 
+  # offenseのゲッター
+  def offense
+    @offense
+  end
+
   # defenseのセッター
   def defense=(defense)
     @defense = defense
+  end
+
+  # defenseのゲッター
+  def defense
+    @defense
   end
 
 end
@@ -27,3 +47,9 @@ brave.name = "テリー"
 brave.hp = 500
 brave.offense = 150
 brave.defense = 100
+
+# 値を取得する
+puts brave.name
+puts brave.hp
+puts brave.offense
+puts brave.defense
