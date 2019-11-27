@@ -1,10 +1,10 @@
 class Brave
-  # initializeメソッド
-  def initialize(name:, hp:, offense:, defense:)
-    @name = name
-    @hp = hp
-    @offense = offense
-    @defense = defense
+  # initializeメソッド 引数に**を記述:ハッシュしか受け取れなくなる
+  def initialize(**params)
+    @name = params[:name]
+    @hp = params[:hp]
+    @offense = params[:offense]
+    @defense = params[:defense]
   end
 
   # # nameのセッター
@@ -49,7 +49,7 @@ class Brave
 
 end
 
-#キーワード引数でinitializeメソッドに値を渡す
+#キーワード引数（hash）でinitializeメソッドに値を渡す
 brave = Brave.new(name: "テリー", hp: 500, offense: 150, defense: 100)
 
 # brave.name = "テリー"
