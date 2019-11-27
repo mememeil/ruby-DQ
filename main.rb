@@ -1,4 +1,16 @@
 class Brave
+  # attr_readerでゲッターの置換
+  attr_reader :name
+  # attr_reader :hp
+  attr_reader :offense
+  attr_reader :defense
+
+  # attr_writer :hp
+
+  # attr_accessorで:hpのゲッターとセッターをまとめる
+  # 残りのステータスは書き換え不要なのでゲッターのみでOK
+  attr_accessor :hp
+
   # initializeメソッド 引数に**を記述:ハッシュしか受け取れなくなる
   def initialize(**params)
     @name = params[:name]
@@ -7,45 +19,45 @@ class Brave
     @defense = params[:defense]
   end
 
-  # # nameのセッター
+  # nameのセッター
   # def name=(name)
   #   @name = name
   # end
 
   # nameのゲッター
-  def name
-    @name
-  end
+  # def name
+  #   @name
+  # end
 
-  # # hpのセッター
+  # hpのセッター復活
   # def hp=(hp)
   #   @hp = hp
   # end
 
   # hpのゲッター
-  def hp
-    @hp
-  end
+  # def hp
+  #   @hp
+  # end
 
-  # # offenseのセッター
+  # offenseのセッター
   # def offense=(offense)
   #   @offense = offense
   # end
 
   # offenseのゲッター
-  def offense
-    @offense
-  end
+  # def offense
+  #   @offense
+  # end
 
-  # # defenseのセッター
+  # defenseのセッター
   # def defense=(defense)
   #   @defense = defense
   # end
 
   # defenseのゲッター
-  def defense
-    @defense
-  end
+  # def defense
+  #   @defense
+  # end
 
 end
 
@@ -70,3 +82,6 @@ HP:#{brave.hp}
 OFFENSE:#{brave.offense}
 DEFENSE:#{brave.defense}
 TEXT
+
+# ダメージでHPが減る処理
+brave.hp -= 30
