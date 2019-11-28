@@ -59,6 +59,8 @@ class Monster
   attr_reader :offense
   attr_reader :defense
 
+  POWER_UP_RATE = 2
+
   # initializeメソッド 引数はhashのみの受け取り
   def initialize(**params)
     @name = params[:name]
@@ -66,6 +68,40 @@ class Monster
     @offense = params[:offense]
     @defense = params[:defense]
   end
+
+  # モンスターの攻撃メソッド
+  def attack(brave)
+    puts "#{@name}の攻撃"
+
+    if @hp == @hp * 0.5
+      puts "#{@name}は怒っている"
+      puts "#{@name}の攻撃力が上がった！"
+      calc_damage = sp_attack - brave.defense
+    else
+      puts "通常攻撃"
+      calc_damage = @offense - brave.defense
+    end
+
+    damage = 0
+
+    if calc_damage >= 0
+      damage = calc_damage
+      brave.hp -= calc_damage
+    elsif calc_damage < 0 && calc_damage >= -100
+      damage = (@offense * 0.3).floor
+      brave.hp -= damage
+    else
+      damage = (@offense * 0.1).floor
+    end
+
+    puts "#{brave.name}は#{damage}のダメージを受けた"
+    puts "#{brave.name}の残りHPは#{brave.hp}になった"
+  end
+
+  def sp_attack
+    @offense * POWER_UP_RATE
+  end
+  
 end
 
 
@@ -92,5 +128,10 @@ monster = Monster.new(name: "もじゃもじゃ", hp: 1000, offense: 200, defens
 # ダメージでHPが減る処理
 # brave.hp -= 30
 
-# attackメソッドの呼び出し
+# 勇者のattackメソッドの呼び出し
 brave.attack(monster)
+
+puts "----------------------------------"
+
+# モンスターのattackメソッドの呼び出し
+monster.attack(brave)
