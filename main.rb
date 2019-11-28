@@ -1,15 +1,12 @@
 # 勇者クラスの定義
 class Brave
-  # attr_readerでゲッターの置換
   attr_reader :name
   attr_reader :offense
   attr_reader :defense
-
-  # attr_accessorで:hpのゲッターとセッターをまとめる
-  # 残りのステータスは書き換え不要なのでゲッターのみでOK
   attr_accessor :hp
 
-  # initializeメソッド 引数に**を記述:ハッシュしか受け取れなくなる
+  SP_ATTACK_CONST = 2 # 会心の一撃の時の攻撃力アップ倍率
+
   def initialize(**params)
     @name = params[:name]
     @hp = params[:hp]
@@ -18,30 +15,39 @@ class Brave
   end
 
   def attack(monster)
-    # @offense:勇者の攻撃力
-    # monster.defense:モンスターの防御力
-    # ダメージ判定計算
-    calcDamage = @offense - monster.defense
-    # 実際のダメージ用変数
+    puts "#{@name}の攻撃"
+
+    #会心の一撃用のランダム数
+    attack_num = rand(4)
+
+    #4分の1の確率でsp_attackを実行
+    if attack_num == 0
+      puts "会心の一撃！！"
+      calc_damage = sp_attack - monster.defense
+    else
+      puts "通常攻撃"
+      calc_damage = @offense - monster.defense
+    end
+
     damage = 0
 
-    # モンスターのHPから計算したダメージを引く
-    # calcDamageがマイナス（勇者の攻撃力<モンスターの防御力）の場合、攻撃力に割合をかけて減算
-    if calcDamage >= 0
-      damage = calcDamage
-      monster.hp -= calcDamage
-    elsif calcDamage < 0 && calcDamage >= -100
-      damage = (@offense * 0.15).floor
+    if calc_damage >= 0
+      damage = calc_damage
+      monster.hp -= calc_damage
+    elsif calc_damage < 0 && calc_damage >= -100
+      damage = (@offense * 0.3).floor
       monster.hp -= damage
     else
-      damage = (@offense * 0.05).floor
+      damage = (@offense * 0.1).floor
       monster.hp -= damage
     end
 
-    # メッセージ表示
-    puts "#{@name}の攻撃"
     puts "#{monster.name}は#{damage}のダメージを受けた"
     puts "#{monster.name}の残りHPは#{monster.hp}になった"
+  end
+
+  def sp_attack # 勇者の攻撃力が1.5倍
+    @offense * SP_ATTACK_CONST
   end
 end
 
