@@ -1,137 +1,132 @@
-# 勇者クラスの定義
 class Brave
   attr_reader :name
-  attr_reader :offense
   attr_reader :defense
+  attr_reader :offense
   attr_accessor :hp
-
-  SP_ATTACK_CONST = 2 # 会心の一撃の時の攻撃力アップ倍率
-
+  
+   
   def initialize(**params)
     @name = params[:name]
-    @hp = params[:hp]
-    @offense = params[:offense]
     @defense = params[:defense]
-  end
-
-  def attack(monster)
-    puts "#{@name}の攻撃"
-
-    #会心の一撃用のランダム数
-    attack_num = rand(4)
-
-    #4分の1の確率でsp_attackを実行
-    if attack_num == 0
-      puts "会心の一撃！！"
-      calc_damage = sp_attack - monster.defense
-    else
-      puts "通常攻撃"
-      calc_damage = @offense - monster.defense
-    end
-
-    damage = 0
-
-    if calc_damage >= 0
-      damage = calc_damage
-      monster.hp -= calc_damage
-    elsif calc_damage < 0 && calc_damage >= -100
-      damage = (@offense * 0.3).floor
-      monster.hp -= damage
-    else
-      damage = (@offense * 0.1).floor
-      monster.hp -= damage
-    end
-
-    puts "#{monster.name}は#{damage}のダメージを受けた"
-    puts "#{monster.name}の残りHPは#{monster.hp}になった"
-  end
-
-  def sp_attack # 勇者の攻撃力が1.5倍
-    @offense * SP_ATTACK_CONST
-  end
-end
-
-# モンスタークラスの定義
-class Monster
-  # ゲッター、セッター
-  attr_reader :name
-  attr_accessor :hp
-  attr_reader :offense
-  attr_reader :defense
-
-  POWER_UP_RATE = 2
-
-  # initializeメソッド 引数はhashのみの受け取り
-  def initialize(**params)
-    @name = params[:name]
-    @hp = params[:hp]
     @offense = params[:offense]
-    @defense = params[:defense]
-  end
-
-  # モンスターの攻撃メソッド
-  def attack(brave)
-    puts "#{@name}の攻撃"
-
-    if @hp == @hp * 0.5
-      puts "#{@name}は怒っている"
-      puts "#{@name}の攻撃力が上がった！"
-      calc_damage = sp_attack - brave.defense
-    else
-      puts "通常攻撃"
-      calc_damage = @offense - brave.defense
-    end
-
-    damage = 0
-
-    if calc_damage >= 0
-      damage = calc_damage
-      brave.hp -= calc_damage
-    elsif calc_damage < 0 && calc_damage >= -100
-      damage = (@offense * 0.3).floor
-      brave.hp -= damage
-    else
-      damage = (@offense * 0.1).floor
-    end
-
-    puts "#{brave.name}は#{damage}のダメージを受けた"
-    puts "#{brave.name}の残りHPは#{brave.hp}になった"
-  end
-
-  def sp_attack
-    @offense * POWER_UP_RATE
+    @hp = params[:hp]
   end
   
+  def attack(monster)
+    puts "#{@name}の攻撃"
+    
+    random = rand(4)
+    
+    if random == 0
+      puts "会心の一撃！"
+      calc_attack = @offense * 1.2 - monster.defense
+    else
+      puts "通常攻撃"
+      calc_attack = @offense - monster.defense
+    end
+    
+    damage =
+      case calc_attack
+      when 200..1000
+        monster.hp * rand(91..100) / 100
+      when 160...200
+        monster.hp * rand(71..90) / 100
+      when 120...160
+        monster.hp * rand(51..70) / 100
+      when 80...120
+        monster.hp * rand(31..50) / 100
+      when 40...80
+        monster.hp * rand(21..30) / 100
+      when 20...40
+        monster.hp * rand(11..20) / 100
+      when -20...20
+        monster.hp * rand(5..10) / 100
+      when -60...-20
+        monster.hp * rand(1..4) / 100
+      else
+        monster.hp * rand(0..3) / 100
+      end
+      
+      puts "random:#{random}"
+      puts "calc_attack:#{calc_attack}"
+      puts "damage:#{damage}"
+      puts "#{monster.name}に#{damage}のダメージをあたえた！"
+      puts "#{monster.name}のHPは#{monster.hp - damage}になった"
+  end
 end
 
+class Monster
+  attr_reader :name
+  attr_reader :defense
+  attr_reader :offense
+  attr_accessor :hp
+  
+  def initialize(**params)
+    @name = params[:name]
+    @defense = params[:defense]
+    @offense = params[:offense]
+    @hp = params[:hp]
+  end
+  
+  def attack(brave)
+    puts "#{@name}の攻撃"
+    
+    random = rand(4)
+    
+    if random == 0
+      puts "会心の一撃！"
+      calc_attack = @offense * 1.2 - brave.defense
+    else
+      puts "通常攻撃"
+      calc_attack = @offense - brave.defense
+    end
+    
+    damage =
+      case calc_attack
+      when 200..1000
+        brave.hp * rand(91..100) / 100
+      when 160...200
+        brave.hp * rand(71..90) / 100
+      when 120...160
+        brave.hp * rand(51..70) / 100
+      when 80...120
+        brave.hp * rand(31..50) / 100
+      when 40...80
+        brave.hp * rand(21..30) / 100
+      when 20...40
+        brave.hp * rand(11..20) / 100
+      when -20...20
+        brave.hp * rand(5..10) / 100
+      when -60...-20
+        brave.hp * rand(1..4) / 100
+      else
+        brave.hp * rand(0..3) / 100
+      end
+      
+      puts "random:#{random}"
+      puts "calc_attack:#{calc_attack}"
+      puts "damage:#{damage}"
+      puts "#{brave.name}に#{damage}のダメージをあたえた！"
+      puts "#{brave.name}のHPは#{brave.hp - damage}になった"
+  end
+end
 
-#キーワード引数（hash）でinitializeメソッドに値を渡す
-brave = Brave.new(name: "テリー", hp: 500, offense: 150, defense: 100)
-monster = Monster.new(name: "もじゃもじゃ", hp: 1000, offense: 200, defense: 200)
+brave = Brave.new(name: "勇者", defense: 200, offense: 200, hp: 500)
+monster = Monster.new(name: "もじゃもじゃ", defense: 220, offense: 230, hp: 700)
 
-# ヒアドキュメント:勇者
-# puts <<~TEXT
+
+# puts <<-TEXT
 # NAME:#{brave.name}
 # HP:#{brave.hp}
-# OFFENSE:#{brave.offense}
 # DEFENSE:#{brave.defense}
-# TEXT
-
-# ヒアドキュメント:モンスター
-# puts <<~TEXT
+# OFFENSE:#{brave.offense}
+# ------------------------------------
 # NAME:#{monster.name}
 # HP:#{monster.hp}
-# OFFENSE:#{monster.offense}
 # DEFENSE:#{monster.defense}
+# OFFENSE:#{monster.offense}
 # TEXT
 
-# ダメージでHPが減る処理
-# brave.hp -= 30
-
-# 勇者のattackメソッドの呼び出し
 brave.attack(monster)
-
-puts "----------------------------------"
-
-# モンスターのattackメソッドの呼び出し
+puts "------------------------------------"
 monster.attack(brave)
