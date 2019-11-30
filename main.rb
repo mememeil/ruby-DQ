@@ -1,21 +1,29 @@
-# 勇者クラスの定義
-class Brave
-  attr_reader :name
-  attr_reader :defense
-  attr_reader :offense
-  attr_accessor :hp
-  attr_reader :full_hp
-  
-  # 勇者クラスの初期化 **paramsはハッシュのみ受け取り可能の設定  
+#親クラスの定義
+class Character
+  attr_accessor :name, :hp
+  attr_reader :offense, :defense, :full_hp
+
   def initialize(**params)
     @name = params[:name]
-    @defense = params[:defense]
-    @offense = params[:offense]
     @hp = params[:hp]
+    @offense = params[:offense]
+    @defense = params[:defense]
+  end
+end
+
+# 勇者クラスの定義
+class Brave < Character 
+  def initialize(**params)
+    super(
+      name: params[:name],
+      hp: params[:hp],
+      offense: params[:offense],
+      defense: params[:defense]
+    )
 
     @full_hp = params[:hp]
   end
-  
+
   # 攻撃メソッド
   def attack(monster)
     puts "#{@name}の攻撃"
@@ -51,26 +59,26 @@ class Brave
       end
       
       # 実際のダメージ計算 defense値とoffense値で重みを算出し、敵HPから割合でダメージ値を出す
-        case calc_attack
-        when 200..1000
-          monster.full_hp * rand(91..100) / 100
-        when 160...200
-          monster.full_hp * rand(71..90) / 100
-        when 120...160
-          monster.full_hp * rand(51..70) / 100
-        when 80...120
-          monster.full_hp * rand(31..50) / 100
-        when 40...80
-          monster.full_hp * rand(21..30) / 100
-        when 20...40
-          monster.full_hp * rand(11..20) / 100
-        when -20...20
-          monster.full_hp * rand(5..10) / 100
-        when -60...-20
-          monster.full_hp * rand(1..4) / 100
-        else
-          monster.full_hp * rand(0..3) / 100
-        end
+      case calc_attack
+      when 200..1000
+        monster.full_hp * rand(91..100) / 100
+      when 160...200
+        monster.full_hp * rand(71..90) / 100
+      when 120...160
+        monster.full_hp * rand(51..70) / 100
+      when 80...120
+        monster.full_hp * rand(31..50) / 100
+      when 40...80
+        monster.full_hp * rand(21..30) / 100
+      when 20...40
+        monster.full_hp * rand(11..20) / 100
+      when -20...20
+        monster.full_hp * rand(5..10) / 100
+      when -60...-20
+        monster.full_hp * rand(1..4) / 100
+      else
+        monster.full_hp * rand(0..3) / 100
+      end
     end
 
     def cause_damage(monster, damage)
@@ -86,18 +94,14 @@ class Brave
 end
 
 #モンスタークラスの定義
-class Monster
-  attr_accessor :name
-  attr_reader :defense
-  attr_reader :offense
-  attr_accessor :hp
-  attr_reader :full_hp
-  
+class Monster < Character
   def initialize(**params)
-    @name = params[:name]
-    @defense = params[:defense]
-    @offense = params[:offense]
-    @hp = params[:hp]
+    super(
+      name: params[:name],
+      hp: params[:hp],
+      offense: params[:offense],
+      defense: params[:defense]
+    )
 
     @is_angry_flag = false
     @half_hp = params[:hp] * 0.5
@@ -191,8 +195,8 @@ class Monster
 
 end
 
-brave = Brave.new(name: "勇者", defense: 200, offense: 200, hp: 500)
-monster = Monster.new(name: "もじゃもじゃ", defense: 220, offense: 230, hp: 700)
+brave = Brave.new(name: "勇者", hp: 500, offense: 200, defense: 200)
+monster = Monster.new(name: "もじゃもじゃ", hp: 700, offense: 230, defense: 220)
 
 loop do
   if brave.hp <= 0 || monster.hp <= 0
@@ -203,4 +207,16 @@ loop do
     monster.attack(brave)
     puts "------------------------------------"
   end
+end
+
+battle_result = brave.hp > 0
+
+if battle_result
+  exp = (monster.offense + monster.defense) * 2
+  gold = (monster.offense + monster.defense) * 3
+  puts "#{brave.name}は戦いに勝った！"
+  puts "#{exp}の経験値と#{gold}ゴールドを手に入れた！"
+else
+  puts "#{brave.name}は戦いに負けた…"
+  puts "目の前が真っ暗になった"
 end
