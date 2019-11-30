@@ -75,6 +75,11 @@ class Brave
 
     def cause_damage(monster, damage)
       monster.hp -= damage
+
+      if monster.hp < 0
+        monster.hp = 0
+      end
+
       puts "#{monster.name}に#{damage}のダメージをあたえた！"
     end
 
@@ -176,6 +181,11 @@ class Monster
 
     def cause_damage(brave, damage)
       brave.hp -= damage
+
+      if brave.hp < 0
+        brave.hp = 0
+      end
+      
       puts "#{brave.name}に#{damage}のダメージをあたえた！"
     end
 
