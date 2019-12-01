@@ -1,29 +1,10 @@
 require "./brave"
 require "./monster"
+require "./games_controller"
 
+games_controller = GamesController.new
 
 brave = Brave.new(name: "勇者", hp: 500, offense: 200, defense: 200)
-monster = Monster.new(name: "もじゃもじゃ", hp: 700, offense: 230, defense: 220)
+monster = Monster.new(name: "もじゃもじゃ", hp: rand(400..600), offense: rand(180..220), defense: rand(190..210))
 
-loop do
-  if brave.hp <= 0 || monster.hp <= 0
-    break
-  else
-    brave.attack(monster)
-    puts "------------------------------------"
-    monster.attack(brave)
-    puts "------------------------------------"
-  end
-end
-
-battle_result = brave.hp > 0
-
-if battle_result
-  exp = (monster.offense + monster.defense) * 2
-  gold = (monster.offense + monster.defense) * 3
-  puts "#{brave.name}は戦いに勝った！"
-  puts "#{exp}の経験値と#{gold}ゴールドを手に入れた！"
-else
-  puts "#{brave.name}は戦いに負けた…"
-  puts "目の前が真っ暗になった"
-end
+games_controller.battle(brave: brave, monster: monster)
