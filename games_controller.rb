@@ -1,4 +1,10 @@
+# message_dialogの読み込み
+require "./message_dialog"
+
 class GamesController
+  # MessageDialogモジュールのinclude
+  include MessageDialog
+
   def battle(**params)
     build_characters(params)
     
@@ -30,22 +36,25 @@ class GamesController
     end
 
     def battle_judgement
-      if brave_win?
-        result = calc_exp_gold
-        puts "#{@brave.name}は戦いに勝った！"
-        puts "#{result[:exp]}の経験値と#{result[:gold]}ゴールドを手に入れた！"
-      else
-        puts "#{@brave.name}は戦いに負けた…"
-        puts "目の前が真っ暗になった"
-      end
+      result = calc_exp_gold
+
+      # end_messageの呼び出し
+      end_message(result)
+        
     end
 
     def calc_exp_gold
-      exp = ((@monster.offense + @monster.defense) * 2).floor
-      gold = ((@monster.offense + @monster.defense) * 3).floor
-      result = {exp: exp, gold: gold}
+      if brave_win?
+        brave_win_flag = true
+        exp = ((@monster.offense + @monster.defense) * 2).floor
+        gold = ((@monster.offense + @monster.defense) * 3).floor
+      else
+        brave_win_flag = false
+        exp = 0
+        gold = 0
+      end
 
-      result
+      {brave_win_flag: brave_win_flag, exp: exp, gold: gold}
     end
 
 end
