@@ -9,3 +9,4 @@
 3. 勝敗が表示される
 
 ## デモ
+![demo](https://github.com/mememeil/repo-for-gif/blob/master/ruby-DQ.gif)
